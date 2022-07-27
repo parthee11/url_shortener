@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
     res.sendFile(__dirname + "/views/index.html")
 })
 
-app.post("/api/shorturl/", async (req, res) => {
+app.post("/shorturl/", async (req, res) => {
     const url = req.body.url;
     const urlShort = shortId.generate();
     if(!validUrl.isWebUri(url)) {
@@ -67,7 +67,7 @@ app.post("/api/shorturl/", async (req, res) => {
     }    
 });
 
-app.get("/api/shorturl/:url?", async (req, res) => {
+app.get("/shorturl/:url?", async (req, res) => {
     const url = req.params.url;
     const findUrl = await URL.findOne({ short_url: url })
     if(!findUrl) {
