@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 const cors = require('cors');
 app.use(cors({optionsSuccessStatus: 200}));
 
-app.use("/public", express.static(__dirname + "/public"))
+app.use("/public", express.static(__dirname + "/client/build"))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
     extended: false
@@ -42,10 +42,15 @@ const URL = mongoose.model("URL", URLSchema);
 
 // routes
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/views/index.html")
+    res.sendFile(__dirname + "/client/build/index.html")
 })
 
-app.post("/shorturl/", async (req, res) => {
+app.get("/shorturl", async (req, res) => {
+    const urls = await URL.find({});
+    res.json(urls);
+})
+
+app.post("/shorturl", async (req, res) => {
     const url = req.body.url;
     const urlShort = shortId.generate();
     if(!validUrl.isWebUri(url)) {
